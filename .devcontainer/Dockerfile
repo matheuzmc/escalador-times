@@ -54,6 +54,13 @@ RUN ARCH=$(dpkg --print-architecture) && \
   sudo dpkg -i "git-delta_${GIT_DELTA_VERSION}_${ARCH}.deb" && \
   rm "git-delta_${GIT_DELTA_VERSION}_${ARCH}.deb"
 
+# Install glow (markdown renderer)
+RUN mkdir -p /etc/apt/keyrings && \
+  wget -qO- https://repo.charm.sh/apt/gpg.key | gpg --dearmor -o /etc/apt/keyrings/charm.gpg && \
+  echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" > /etc/apt/sources.list.d/charm.list && \
+  apt-get update && apt-get install -y --no-install-recommends glow && \
+  apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Set up non-root user
 USER node
 
@@ -73,9 +80,14 @@ ARG ZSH_IN_DOCKER_VERSION=1.2.0
 RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v${ZSH_IN_DOCKER_VERSION}/zsh-in-docker.sh)" -- \
   -p git \
   -p fzf \
+  -p https://github.com/zsh-users/zsh-syntax-highlighting \
+  -p https://github.com/zsh-users/zsh-autosuggestions \
+  -p https://github.com/zsh-users/zsh-history-substring-search \
   -a "source /usr/share/doc/fzf/examples/key-bindings.zsh" \
   -a "source /usr/share/doc/fzf/examples/completion.zsh" \
   -a "export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
+  -a "bindkey '^[[A' history-substring-search-up" \
+  -a "bindkey '^[[B' history-substring-search-down" \
   -x
 
 # Install Claude
