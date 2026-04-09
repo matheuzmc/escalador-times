@@ -1,0 +1,10 @@
+{
+  "permission": {
+    "read": {
+      "/workspace/.opencode/get-shit-done/*": "allow"
+    },
+    "external_directory": {
+      "/workspace/.opencode/get-shit-done/*": "allow"
+    }
+  }
+}
