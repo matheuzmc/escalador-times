@@ -65,6 +65,10 @@ done < <(echo "$gh_ranges" | jq -r '(.web + .api + .git)[]' | aggregate -q)
 
 # Resolve and add other allowed domains
 for domain in \
+    "api.openai.com" \
+    "chatgpt.com" \
+    "chat.openai.com" \
+    "auth.openai.com" \
     "registry.npmjs.org" \
     "api.anthropic.com" \
     "sentry.io" \
