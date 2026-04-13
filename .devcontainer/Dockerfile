@@ -90,8 +90,10 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
   -a "bindkey '^[[B' history-substring-search-down" \
   -x
 
-# Install Claude
-RUN npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}
+  # Install Claude, Codex and OpenCode
+  RUN npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION} \
+    && npm install -g @openai/codex \
+    && npm i -g opencode-ai
 
 
 # Copy and set up firewall script
